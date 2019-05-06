@@ -1,0 +1,94 @@
+﻿@model X.PagedList.IPagedList<TesteSGRENTALS.Entities.Produto>
+@using X.PagedList.Mvc.Core
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<br />
+@if (TempData.Peek("Message") != null)
+{
+<div class="alert alert-success alert-dismissable" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    @TempData["Message"]
+</div>
+}
+
+<div style="text-align:center">
+    <h3>Produtos cadastrados</h3>
+</div>
+<hr />
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-info">Cadastrar</a>
+</p>
+
+<div class="row">
+    <div class="offset-md-6 col-md-6">
+        <form asp-controller="Produtos" asp-action="Index" method="post">
+            <div class="input-group">
+                <b>Procurar por Nome:</b> &nbsp;
+                <input class="form-control" name="txtProcurar" /> &nbsp;
+                <input type="submit" value="Buscar?" class="btn btn-outline-dark" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ProdutoId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Preco)
+            </th>
+            <th>
+                Opções
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProdutoId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Preco)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProdutoId" class="btn btn-outline-warning">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProdutoId" class="btn btn-outline-danger">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+Página @Model.PageNumber de @Model.PageCount
+
+<div style="text-align:center">
+    @Html.PagedListPager(Model, pagina => Url.Action("Index", new { pagina }))
+</div>
+
+
